@@ -8,13 +8,13 @@ or any other MCP host.
 
 Run as a CLI:
 
-    ai-divination-mcp
+    oraclebone-mcp
 
 Or in claude_desktop_config.json:
 
     {
       "mcpServers": {
-        "divination": { "command": "ai-divination-mcp" }
+        "divination": { "command": "oraclebone-mcp" }
       }
     }
 
@@ -87,6 +87,14 @@ def tool_iching_cast(args: Dict[str, Any]) -> Dict[str, Any]:
 def tool_xiaoliuren_cast(args: Dict[str, Any]) -> Dict[str, Any]:
     method = args.get("method", "numbers")
     if method == "numbers":
+        missing = [k for k in ("month", "day", "hour") if args.get(k) is None]
+        if missing:
+            raise ValueError(
+                "method='numbers' requires month, day, and hour (integers). "
+                f"Missing: {', '.join(missing)}. "
+                "Example: {\"method\": \"numbers\", \"month\": 3, \"day\": 12, \"hour\": 7}. "
+                "Use method='time' or method='lunar_time' with a datetime instead."
+            )
         return _ok(
             xiaoliuren.cast_numbers(
                 month=int(args["month"]),
@@ -193,6 +201,12 @@ TOOLS = [
                 "hour": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Chinese hour branch index (1-12), not clock hour."},
                 "datetime": {"type": "string", "description": "ISO 8601 datetime for method=time or lunar_time."},
             },
+            "allOf": [
+                {
+                    "if": {"properties": {"method": {"const": "numbers"}}},
+                    "then": {"required": ["month", "day", "hour"]},
+                }
+            ],
         },
         "outputSchema": _load_output_schema("xiaoliuren-cast"),
         "_call": tool_xiaoliuren_cast,

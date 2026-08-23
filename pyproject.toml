@@ -1,6 +1,6 @@
 [project]
 name = "oraclebone"
-version = "8.1.0"
+version = "8.2.0"
 description = "The bone cracks. The model reads. Audited divination skills for AI agents — tarot, I Ching, Xiao Liu Ren, Bazi."
 readme = "README.md"
 requires-python = ">=3.9"

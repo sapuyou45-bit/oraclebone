@@ -3,7 +3,7 @@
 # can invoke the audited CLI instead of inventing a draw.
 
 name: ai-divination-xiaoliuren
-version: "8.1.0"
+version: "8.2.0"
 display_name: "Xiao Liu Ren"
 description: "Cast Xiao Liu Ren for quick timing reflection. The model never generates the draw — it calls the CLI and interprets the JSON."
 

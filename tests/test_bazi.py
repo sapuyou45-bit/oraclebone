@@ -84,6 +84,46 @@ class BaziCastTests(unittest.TestCase):
         self.assertIn("hour", joined)
         self.assertIn("invent", joined)
 
+    def test_shengxiao_agrees_with_year_pillar_between_lichun_and_lunar_new_year(self):
+        # 2026: lichun ~Feb 4 (year pillar -> 丙午/Horse), lunar new year Feb 17
+        # (lunar year zodiac stays Snake until then). The two conventions
+        # disagree in this window; the reported shengxiao must follow the year
+        # pillar.
+        result = bazi.cast("2026-02-10T12:00:00", timezone="Asia/Shanghai")
+        self.assertEqual(result["pillars"]["year"]["ganzhi"], "丙午")
+        self.assertEqual(result["shengxiao"]["char"], "马")
+        self.assertEqual(result["shengxiao"]["english"], "Horse")
+        self.assertEqual(result["shengxiao"]["zodiac_basis"], "bazi-year-pillar")
+        # Lunar-new-year zodiac preserved separately for auditability.
+        self.assertEqual(result["lunar_year_zodiac"]["char"], "蛇")
+        self.assertEqual(result["lunar_year_zodiac"]["english"], "Snake")
+        self.assertEqual(result["lunar_year_zodiac"]["zodiac_basis"], "lunar-new-year")
+
+    def test_shengxiao_matches_year_branch_after_lunar_new_year(self):
+        result = bazi.cast("1990-05-20T14:30:00")
+        self.assertEqual(result["shengxiao"]["char"], "马")
+        self.assertEqual(result["lunar_year_zodiac"]["char"], "马")
+
+    def test_timezone_override_note_recorded_on_conflict(self):
+        # Input carries +09:00 but --timezone says Shanghai (+08:00 in winter,
+        # outside the 1986-1991 China DST window): the override must be
+        # recorded, not applied silently.
+        result = bazi.cast("1990-01-20T14:30:00+09:00", timezone="Asia/Shanghai")
+        note = result["inputs"].get("timezone_override_note")
+        self.assertIsNotNone(note)
+        self.assertIn("9:00:00", note)
+        self.assertIn("Asia/Shanghai", note)
+
+    def test_no_timezone_override_note_when_offsets_match(self):
+        # May 1990 falls inside China's DST period (+09:00), so an explicit
+        # +09:00 input matches Asia/Shanghai and no note should appear.
+        result = bazi.cast("1990-05-20T14:30:00+09:00", timezone="Asia/Shanghai")
+        self.assertNotIn("timezone_override_note", result["inputs"])
+
+    def test_no_timezone_override_note_when_consistent(self):
+        result = bazi.cast("1990-05-20T14:30:00", timezone="Asia/Shanghai")
+        self.assertNotIn("timezone_override_note", result["inputs"])
+
 
 @unittest.skipUnless(HAVE_LUNAR, "lunar-python not installed")
 class BaziCliTests(unittest.TestCase):

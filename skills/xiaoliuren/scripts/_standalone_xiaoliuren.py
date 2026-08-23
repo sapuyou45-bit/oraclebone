@@ -90,7 +90,15 @@ def cast_time(raw_datetime: str | None) -> dict[str, Any]:
     result["accuracy"] = "gregorian-fallback"
     result["datetime"] = dt.isoformat(timespec="seconds")
     result["calendar_note"] = "Uses Gregorian month/day as a lightweight fallback. For traditional lunar casting, pass lunar numbers with --method numbers."
-    result["warning"] = "This is not a traditional lunar calculation. Use --method numbers with lunar inputs or --method lunar-time with lunar_python installed."
+    if dt.day > day:
+        result["day_clamped"] = True
+        result["warning"] = (
+            "This is not a traditional lunar calculation. Use --method numbers with lunar inputs "
+            "or --method lunar-time with lunar_python installed. "
+            f"Input day {dt.day} was clamped to 30 because Xiao Liu Ren counts cap at 30."
+        )
+    else:
+        result["warning"] = "This is not a traditional lunar calculation. Use --method numbers with lunar inputs or --method lunar-time with lunar_python installed."
     return result
 
 

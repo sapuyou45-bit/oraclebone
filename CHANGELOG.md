@@ -7,6 +7,18 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## [Unreleased]
 
+## [8.2.0] - 2026-08-23
+
+### Fixed — correctness audit findings
+- **Bazi shengxiao now always agrees with the year pillar** — the zodiac is derived from the year pillar's earthly branch (lichun boundary) instead of the lunar-new-year year. Previously, births between lichun and lunar new year produced contradictory output (e.g. 2026-02-10: year pillar 丙午 "Horse" vs shengxiao "Snake"). `shengxiao` gains a `zodiac_basis: "bazi-year-pillar"` field; the lunar-new-year zodiac is preserved in a new `lunar_year_zodiac` object so both conventions remain auditable.
+- **MCP `xiaoliuren_cast` missing-argument errors are now actionable** — `method=numbers` without month/day/hour returns a human-readable error listing exactly what is missing (previously a bare `KeyError`). The tool's inputSchema now conditionally requires month/day/hour via `allOf/if-then`.
+
+### Changed
+- Bazi: when the input ISO string carries an explicit UTC offset that conflicts with `--timezone`, the override is recorded as `inputs.timezone_override_note` instead of being applied silently.
+- Xiao Liu Ren `time` fallback: clamping day 31 to 30 is now flagged with `day_clamped: true` and an explicit warning instead of happening silently.
+- Docstrings updated from the legacy `ai-divination` name to `oraclebone` / `oraclebone-mcp`.
+- `shared/response-contract.md`: Chinese section headings translated (结果/象征解读/情境映射/隐藏变量/可行指引/边界).
+
 ## [8.1.0] - 2026-08-13
 
 ### Added — data layer: the model now interprets data, not memory

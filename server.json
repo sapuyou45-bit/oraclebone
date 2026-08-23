@@ -7,12 +7,12 @@
     "url": "https://github.com/sapuyou45-bit/oraclebone",
     "source": "github"
   },
-  "version": "8.1.0",
+  "version": "8.2.0",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "oraclebone",
-      "version": "8.1.0",
+      "version": "8.2.0",
       "transport": {
         "type": "stdio"
       }

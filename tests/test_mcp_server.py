@@ -112,7 +112,27 @@ class HandleTests(unittest.TestCase):
         })
         result = resp["result"]
         self.assertTrue(result.get("isError"))
-        self.assertIn("KeyError", result["content"][0]["text"])
+        text = result["content"][0]["text"]
+        # Human-readable: names the missing arguments instead of a bare KeyError
+        self.assertNotIn("KeyError", text)
+        for arg in ("month", "day", "hour"):
+            self.assertIn(arg, text)
+
+    def test_xiaoliuren_numbers_missing_single_arg_names_it(self):
+        resp = mcp_server.handle({
+            "jsonrpc": "2.0", "id": 81, "method": "tools/call",
+            "params": {"name": "xiaoliuren_cast",
+                       "arguments": {"method": "numbers", "month": 3, "day": 12}},
+        })
+        result = resp["result"]
+        self.assertTrue(result.get("isError"))
+        self.assertIn("hour", result["content"][0]["text"])
+
+    def test_xiaoliuren_input_schema_requires_numbers_args(self):
+        schema = next(t["inputSchema"] for t in mcp_server.TOOLS if t["name"] == "xiaoliuren_cast")
+        conditional = schema["allOf"][0]
+        self.assertEqual(conditional["if"]["properties"]["method"]["const"], "numbers")
+        self.assertEqual(sorted(conditional["then"]["required"]), ["day", "hour", "month"])
 
     def test_unknown_method_returns_jsonrpc_error(self):
         resp = mcp_server.handle({"jsonrpc": "2.0", "id": 9, "method": "no_such_method"})

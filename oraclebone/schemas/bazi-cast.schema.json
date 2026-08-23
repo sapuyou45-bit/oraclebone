@@ -67,6 +67,9 @@
               "type": "string"
             }
           }
+        },
+        "timezone_override_note": {
+          "type": "string"
         }
       }
     },
@@ -101,13 +104,40 @@
       "type": "object",
       "required": [
         "char",
-        "english"
+        "english",
+        "zodiac_basis"
       ],
       "properties": {
         "char": {
           "type": "string"
         },
         "english": {
+          "type": "string"
+        },
+        "zodiac_basis": {
+          "const": "bazi-year-pillar"
+        }
+      }
+    },
+    "lunar_year_zodiac": {
+      "type": "object",
+      "required": [
+        "char",
+        "english",
+        "zodiac_basis",
+        "note"
+      ],
+      "properties": {
+        "char": {
+          "type": "string"
+        },
+        "english": {
+          "type": "string"
+        },
+        "zodiac_basis": {
+          "const": "lunar-new-year"
+        },
+        "note": {
           "type": "string"
         }
       }

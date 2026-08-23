@@ -11,7 +11,7 @@ the AI host never invents a chart. Install with::
 
 CLI::
 
-    ai-divination bazi --datetime 1990-05-20T14:30:00
+    oraclebone bazi --datetime 1990-05-20T14:30:00
 
 JSON output is the contract; agents MUST interpret it without inventing
 pillars, stems, branches, or wuxing values.
@@ -59,6 +59,14 @@ SHENGXIAO_EN = {
     "鼠": "Rat", "牛": "Ox", "虎": "Tiger", "兔": "Rabbit",
     "龙": "Dragon", "蛇": "Snake", "马": "Horse", "羊": "Goat",
     "猴": "Monkey", "鸡": "Rooster", "狗": "Dog", "猪": "Pig",
+}
+
+# Zodiac derived directly from the year pillar's earthly branch so the
+# reported shengxiao always agrees with the year pillar (lichun boundary).
+BRANCH_SHENGXIAO = {
+    "子": "鼠", "丑": "牛", "寅": "虎", "卯": "兔",
+    "辰": "龙", "巳": "蛇", "午": "马", "未": "羊",
+    "申": "猴", "酉": "鸡", "戌": "狗", "亥": "猪",
 }
 
 
@@ -128,8 +136,10 @@ def cast(
             "--datetime is required for bazi (Gregorian ISO 8601, e.g. 1990-05-20T14:30:00)"
         )
     dt = datetime.fromisoformat(raw_datetime)
+    input_had_explicit_offset = dt.tzinfo is not None
 
     tzinfo = None
+    timezone_note = None
     if timezone:
         from zoneinfo import ZoneInfo
 
@@ -137,6 +147,11 @@ def cast(
             tzinfo = ZoneInfo(timezone)
         except Exception as exc:
             raise ValueError(f"Unknown IANA timezone: {timezone}") from exc
+        if input_had_explicit_offset and dt.utcoffset() != dt.replace(tzinfo=tzinfo).utcoffset():
+            timezone_note = (
+                f"Input ISO string carried an explicit UTC offset ({dt.utcoffset()}), "
+                f"which was replaced by --timezone {timezone} ({dt.replace(tzinfo=tzinfo).utcoffset()})."
+            )
         dt = dt.replace(tzinfo=tzinfo)
 
     true_solar = None
@@ -171,23 +186,42 @@ def cast(
     time_pillar["nayin"] = ec.getTimeNaYin()
 
     pillars = {"year": year, "month": month, "day": day, "hour": time_pillar}
-    sx = lunar.getYearShengXiao()
+    # Zodiac from the year pillar's branch so it always agrees with the year
+    # pillar (both use the lichun boundary). The lunar-new-year zodiac is kept
+    # separately for auditability; the two disagree between lichun and lunar
+    # new year.
+    year_branch = ec.getYearZhi()
+    sx = BRANCH_SHENGXIAO[year_branch]
+    lunar_sx = lunar.getYearShengXiao()
+    inputs_payload = {
+        "datetime": dt.isoformat(timespec="seconds"),
+        "timezone": timezone,
+        "true_solar_time": true_solar,
+    }
+    if timezone_note:
+        inputs_payload["timezone_override_note"] = timezone_note
     return {
         "system": "bazi",
         "accuracy": "traditional-lunar-calendar",
         "engine": "lunar-python",
-        "inputs": {
-            "datetime": dt.isoformat(timespec="seconds"),
-            "timezone": timezone,
-            "true_solar_time": true_solar,
-        },
+        "inputs": inputs_payload,
         "lunar_date": {
             "year": int(lunar.getYear()),
             "month": int(lunar.getMonth()),
             "day": int(lunar.getDay()),
             "label": lunar.toString(),
         },
-        "shengxiao": {"char": sx, "english": SHENGXIAO_EN.get(sx, sx)},
+        "shengxiao": {
+            "char": sx,
+            "english": SHENGXIAO_EN.get(sx, sx),
+            "zodiac_basis": "bazi-year-pillar",
+        },
+        "lunar_year_zodiac": {
+            "char": lunar_sx,
+            "english": SHENGXIAO_EN.get(lunar_sx, lunar_sx),
+            "zodiac_basis": "lunar-new-year",
+            "note": "Zodiac by lunar new year boundary; differs from shengxiao above for births between lichun and lunar new year.",
+        },
         "day_master": {
             "stem": day["stem"]["char"],
             "pinyin": day["stem"]["pinyin"],
