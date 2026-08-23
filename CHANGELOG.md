@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to this project are documented here.
-For human-readable release announcements, see `RELEASE_NOTES.md` and [GitHub Releases](https://github.com/sapuyou45-bit/ai-divination-skills/releases).
+For human-readable release announcements, see `RELEASE_NOTES.md` and [GitHub Releases](https://github.com/sapuyou45-bit/oraclebone/releases).
 
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -165,12 +165,12 @@ See `RELEASE_NOTES.md`.
 
 See `RELEASE_NOTES.md` and `git log`.
 
-[Unreleased]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.6.2...HEAD
-[0.6.2]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.6.1...v0.6.2
-[0.6.1]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.6.0...v0.6.1
-[0.6.0]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.5.4...v0.6.0
-[0.5.4]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.5.3...v0.5.4
-[0.5.3]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.5.2...v0.5.3
-[0.5.2]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.5.1...v0.5.2
-[0.5.1]: https://github.com/sapuyou45-bit/ai-divination-skills/compare/v0.5.0...v0.5.1
-[0.5.0]: https://github.com/sapuyou45-bit/ai-divination-skills/releases/tag/v0.5.0
+[Unreleased]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.6.2...HEAD
+[0.6.2]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.6.1...v0.6.2
+[0.6.1]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.5.4...v0.6.0
+[0.5.4]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.5.3...v0.5.4
+[0.5.3]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/sapuyou45-bit/oraclebone/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/sapuyou45-bit/oraclebone/releases/tag/v0.5.0
