@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>OracleBone 在线试玩 — 浏览器里直接起卦</title>
+<meta name="description" content="在浏览器里体验 OracleBone 的可审计起卦：周易、塔罗、小六壬。脚本计算，结果可复制给任意 AI 解读。">
+<link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
+<link rel="stylesheet" href="./styles.css">
+<style>
+  .demo-wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+  .tabs { display: flex; gap: 10px; margin: 20px 0 22px; flex-wrap: wrap; }
+  .tab {
+    padding: 9px 20px; border-radius: 99px; cursor: pointer;
+    border: 1px solid var(--glass-border); background: var(--glass);
+    color: var(--ink-2); font-size: 15px; font-family: var(--sans);
+    transition: all .25s ease;
+  }
+  .tab[aria-selected="true"] { background: rgba(159,225,203,.16); border-color: var(--teal-dim); color: var(--teal); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .opt-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .opt-row label { font-size: 14px; color: var(--ink-2); }
+  select, input[type="text"] {
+    background: rgba(0,0,0,.35); color: var(--teal); border: 1px solid rgba(159,225,203,.25);
+    border-radius: 8px; padding: 8px 12px; font-family: var(--mono); font-size: 13px;
+  }
+  .cast-btn {
+    padding: 10px 22px; border-radius: 8px; cursor: pointer; font-size: 15px;
+    border: 1px solid var(--teal-dim); background: linear-gradient(160deg, rgba(159,225,203,.18), rgba(159,225,203,.06));
+    color: var(--teal); font-family: var(--sans); transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .cast-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(159,225,203,.12); }
+  .out-card { margin-top: 18px; }
+  .out-card pre { font-family: var(--mono); font-size: 13px; line-height: 1.8; color: var(--ink); overflow-x: auto; white-space: pre-wrap; }
+  .hx-display { font-size: 44px; color: #FAC775; margin-right: 12px; vertical-align: middle; }
+  .copy-hint { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+  .vs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 20px; }
+  .vs-bad { border-color: rgba(240,149,149,.35); }
+  .vs-good { border-color: rgba(159,225,203,.35); }
+  .vs-tag { font-size: 12px; padding: 2px 10px; border-radius: 99px; display: inline-block; margin-bottom: 10px; }
+  .vs-bad .vs-tag { background: rgba(240,149,149,.14); color: #F09595; }
+  .vs-good .vs-tag { background: rgba(159,225,203,.14); color: var(--teal); }
+  .back-link { font-size: 14px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="./index.html">
+    <img class="brand-mark" src="./assets/icon-512.png" alt="" width="30" height="30">
+    <span class="brand-name">OracleBone</span>
+    <span class="brand-sub">卜骨</span>
+  </a>
+  <a class="back-link" href="./index.html" data-i18n="demo.back">← 返回主页</a>
+  <div class="lang-switcher" role="group" aria-label="Language selector">
+    <a href="?lang=zh" data-lang="zh" aria-pressed="true">中</a>
+    <a href="?lang=en" data-lang="en" aria-pressed="false">EN</a>
+    <a href="?lang=ja" data-lang="ja" aria-pressed="false">日</a>
+    <a href="?lang=pt" data-lang="pt" aria-pressed="false">PT</a>
+    <a href="?lang=ko" data-lang="ko" aria-pressed="false">한</a>
+    <a href="?lang=es" data-lang="es" aria-pressed="false">ES</a>
+  </div>
+</header>
+
+<main class="demo-wrap" id="top">
+  <section class="hero" style="padding-bottom:8px;">
+    <p class="badge" data-i18n="demo.badge">在线试玩 · 与 PyPI 包同源数据 · 纯浏览器计算</p>
+    <h1 style="font-size:clamp(24px,4vw,34px);" data-i18n="demo.title">先起一卦，看看「脚本出结果」是什么感觉。</h1>
+    <p class="hero-copy" data-i18n="demo.copy">下面所有占法都在你的浏览器本地运行，随机数来自系统熵池，结果以 JSON 输出——复制给任何 AI，让它只解读、不编造。</p>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-panel="p-iching" data-i18n="tab.iching">周易起卦</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="p-tarot" data-i18n="tab.tarot">塔罗抽牌</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="p-xlr" data-i18n="tab.xlr">小六壬</button>
+  </div>
+
+  <section class="panel active" id="p-iching">
+    <div class="glass-card">
+      <div class="opt-row">
+        <label for="ic-method" data-i18n="iching.methodLabel">起卦方法</label>
+        <select id="ic-method">
+          <option value="coins" data-i18n="iching.coins">三枚硬币法</option>
+          <option value="yarrow" data-i18n="iching.yarrow">蓍草等价概率</option>
+        </select>
+      </div>
+      <button class="cast-btn" id="ic-cast" data-i18n="iching.cast">起卦</button>
+      <div class="glass-card out-card" id="ic-out" hidden>
+        <pre id="ic-pre"></pre>
+      </div>
+      <p class="copy-hint" data-i18n="common.hint">把上面的 JSON 复制给你的 AI，让它基于这个结果解读——而不是让它自己编。</p>
+    </div>
+  </section>
+
+  <section class="panel" id="p-tarot">
+    <div class="glass-card">
+      <div class="opt-row">
+        <label><input type="checkbox" id="tt-reverse"> <span data-i18n="tarot.reversals">允许逆位</span></label>
+      </div>
+      <button class="cast-btn" id="tt-cast" data-i18n="tarot.cast">抽三张牌（过去·现在·未来）</button>
+      <div class="glass-card out-card" id="tt-out" hidden>
+        <pre id="tt-pre"></pre>
+      </div>
+      <p class="copy-hint" data-i18n="common.hint2">Fisher-Yates 洗牌 · 系统随机 · 结果可复现审计</p>
+    </div>
+  </section>
+
+  <section class="panel" id="p-xlr">
+    <div class="glass-card">
+      <div class="opt-row">
+        <label for="xlr-n1" data-i18n="xlr.numbersLabel">三个数字（月·日·时 或 随意三数）</label>
+        <input type="text" id="xlr-n1" size="3" value="3">
+        <input type="text" id="xlr-n2" size="3" value="12">
+        <input type="text" id="xlr-n3" size="3" value="7">
+      </div>
+      <button class="cast-btn" id="xlr-cast" data-i18n="xlr.cast">起课</button>
+      <div class="glass-card out-card" id="xlr-out" hidden>
+        <pre id="xlr-pre"></pre>
+      </div>
+      <p class="copy-hint" data-i18n="common.hint">把上面的 JSON 复制给你的 AI，让它基于这个结果解读——而不是让它自己编。</p>
+    </div>
+  </section>
+
+  <section class="section" id="vs">
+    <p class="section-label" data-i18n="vs.label">对比一下</p>
+    <h2 data-i18n="vs.title">AI 瞎编 vs 脚本起卦</h2>
+    <div class="vs-grid">
+      <div class="glass-card vs-bad">
+        <span class="vs-tag" data-i18n="vs.badTag">常见做法</span>
+        <p data-i18n="vs.badCopy">直接问 AI「帮我抽一张塔罗」——它会在几毫秒内“想”出一张牌，概率不受控、无法复现、每次答案都可能是编的。</p>
+      </div>
+      <div class="glass-card vs-good">
+        <span class="vs-tag" data-i18n="vs.goodTag">OracleBone 的做法</span>
+        <p data-i18n="vs.goodCopy">系统熵池出随机数 → 传统概率模型定卦象 → JSON 带完整方法元数据 → AI 只负责解读既定结果。每一步都可审计。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" style="max-width:none;padding-left:0;padding-right:0;">
+    <span>MIT</span>
+    <a href="https://github.com/sapuyou45-bit/oraclebone">GitHub</a>
+    <a href="https://pypi.org/project/oraclebone/">PyPI</a>
+    <a href="./index.html" data-i18n="footer.home">项目主页</a>
+  </footer>
+</main>
+
+<script src="./demo.js"></script>
+</body>
+</html>
