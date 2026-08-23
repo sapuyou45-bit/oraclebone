@@ -306,12 +306,16 @@
     var stored = null;
     try { stored = localStorage.getItem("ob-lang"); } catch (e) {}
     if (stored && LANGS.indexOf(stored) !== -1) return stored;
-    var nav = (navigator.language || "en").toLowerCase();
-    for (var i = 0; i < LANGS.length; i++) {
-      if (nav.indexOf(LANGS[i]) === 0) return LANGS[i];
+    var prefs = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || "en"];
+    for (var p = 0; p < prefs.length; p++) {
+      var pref = String(prefs[p] || "").toLowerCase();
+      if (!pref) continue;
+      for (var i = 0; i < LANGS.length; i++) {
+        if (pref.indexOf(LANGS[i]) === 0) return LANGS[i];
+      }
     }
-    if (nav.indexOf("zh") === 0) return "zh";
-    if (nav.indexOf("pt") === 0) return "pt";
     return "en";
   }
 
