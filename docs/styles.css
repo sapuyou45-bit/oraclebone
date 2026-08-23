@@ -246,3 +246,96 @@ a:focus-visible,
   .top-nav { margin-left: 0; }
   .site-header { gap: 12px; }
 }
+
+/* ---- motion & glow layer (gated by prefers-reduced-motion) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50%      { transform: translate3d(0, -26px, 0) scale(1.06); }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
+  }
+  @keyframes scanline {
+    from { top: -18%; }
+    to   { top: 118%; }
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(circle, rgba(159, 225, 203, 0.10), transparent 65%);
+    animation: floaty 14s ease-in-out infinite;
+  }
+  body::before { width: 46vw; height: 46vw; top: -14vw; right: -12vw; }
+  body::after  { width: 34vw; height: 34vw; bottom: -12vw; left: -10vw; animation-duration: 18s; animation-direction: reverse; }
+
+  .hero-text > * { animation: rise 0.7s cubic-bezier(.2,.7,.3,1) both; }
+  .hero-text .badge      { animation-delay: 0.05s; }
+  .hero-text h1          { animation-delay: 0.12s; }
+  .hero-text .hero-copy  { animation-delay: 0.20s; }
+  .hero-actions          { animation-delay: 0.28s; }
+  .hero-text .hero-note  { animation-delay: 0.36s; }
+  .json-card             { animation: rise 0.8s 0.30s cubic-bezier(.2,.7,.3,1) both; }
+
+  .json-card { position: relative; overflow: hidden; }
+  .json-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 22%;
+    background: linear-gradient(180deg, transparent, rgba(159, 225, 203, 0.08), transparent);
+    animation: scanline 4.5s linear infinite;
+    pointer-events: none;
+  }
+
+  .badge { animation-name: rise, breathe; animation-duration: 0.7s, 5s; animation-delay: 0.05s, 1s; animation-iteration-count: 1, infinite; }
+
+  .reveal-init { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.2,.7,.3,1); }
+  .reveal-in   { opacity: 1; transform: none; }
+}
+
+.glass-card {
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+@media (hover: hover) {
+  .glass-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(159, 225, 203, 0.35);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+}
+
+.top-nav a { position: relative; }
+.top-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1.5px;
+  background: var(--teal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.top-nav a:hover::after { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition: background-position 0.8s ease-out;
+    background-position:
+      calc(var(--gx, 0) * 42px) calc(var(--gy, 0) * 28px),
+      calc(var(--gx, 0) * -24px) calc(var(--gy, 0) * -18px);
+  }
+}

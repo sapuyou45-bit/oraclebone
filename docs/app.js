@@ -353,3 +353,46 @@
     });
   }
 })();
+
+/* ---- scroll reveal & parallax glow (skipped when reduced motion) ---- */
+(function () {
+  "use strict";
+  var motionOK = true;
+  try {
+    motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) {}
+  if (!motionOK) return;
+
+  var targets = document.querySelectorAll(
+    ".intro, #rigor, .skill-grid, .mcp-grid, .command-list, #install, #safety"
+  );
+  for (var i = 0; i < targets.length; i++) targets[i].classList.add("reveal-init");
+
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var j = 0; j < entries.length; j++) {
+        if (entries[j].isIntersecting) {
+          entries[j].target.classList.add("reveal-in");
+          io.unobserve(entries[j].target);
+        }
+      }
+    }, { threshold: 0.12 });
+    for (var k = 0; k < targets.length; k++) io.observe(targets[k]);
+  } else {
+    for (var m = 0; m < targets.length; m++) targets[m].classList.add("reveal-in");
+  }
+
+  if (window.matchMedia("(hover: hover)").matches) {
+    var raf = null;
+    window.addEventListener("mousemove", function (ev) {
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = null;
+        var dx = ev.clientX / window.innerWidth - 0.5;
+        var dy = ev.clientY / window.innerHeight - 0.5;
+        document.body.style.setProperty("--gx", dx.toFixed(3));
+        document.body.style.setProperty("--gy", dy.toFixed(3));
+      });
+    });
+  }
+})();
