@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640">
+  <defs>
+    <radialGradient id="pglow" cx="76%" cy="-10%" r="90%">
+      <stop offset="0%" stop-color="#9FE1CB" stop-opacity="0.13"/>
+      <stop offset="60%" stop-color="#9FE1CB" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#9FE1CB" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="iglow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#9FE1CB" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#9FE1CB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1280" height="640" fill="#2C2C2A"/>
+  <rect width="1280" height="640" fill="url(#pglow)"/>
+
+  <circle cx="300" cy="320" r="240" fill="url(#iglow)"/>
+
+  <g transform="translate(140,100) scale(0.857)">
+    <rect width="512" height="512" rx="116" fill="#2C2A26"/>
+    <g fill="none" stroke="#EDE6D6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M108 56 C114 76, 128 100, 142 126 C148 138, 154 148, 160 160" stroke-width="18"/>
+      <path d="M204 74 C194 96, 182 120, 172 140 C168 148, 164 154, 160 160" stroke-width="18"/>
+      <path d="M160 160 C164 196, 152 226, 156 262 C159 292, 150 330, 151 366 C152 390, 150 410, 148 430" stroke-width="20"/>
+      <path d="M154 296 C166 310, 178 322, 196 332 C202 335, 208 338, 213 342" stroke-width="15"/>
+      <path d="M162 216 C172 220, 181 226, 188 233" stroke-width="10"/>
+      <path d="M152 356 C143 362, 135 370, 129 379" stroke-width="10"/>
+    </g>
+    <text x="216" y="382" font-family="Menlo, 'DejaVu Sans Mono', monospace" font-size="60" font-weight="500" fill="#8AD8BE">{</text>
+    <text x="258" y="382" font-family="Menlo, 'DejaVu Sans Mono', monospace" font-size="60" font-weight="500" fill="#8AD8BE">}</text>
+  </g>
+
+  <text x="520" y="268" font-family="'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" fill="#F5F4EE">OracleBone<tspan font-family="'PingFang SC', sans-serif" font-size="64" font-weight="400" fill="#9FE1CB" dx="28">卜骨</tspan></text>
+  <text x="524" y="330" font-family="'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="400" fill="#B4B2A9">Auditable randomness for AI divination</text>
+  <text x="524" y="380" font-family="'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="400" fill="#B4B2A9">I Ching · Bazi · Tarot · Xiao Liuren — MCP server</text>
+
+  <rect x="524" y="430" width="420" height="58" rx="12" fill="#232321" stroke="#9FE1CB" stroke-opacity="0.35" stroke-width="2"/>
+  <text x="550" y="468" font-family="Menlo, monospace" font-size="27" fill="#9FE1CB">uvx oraclebone-mcp</text>
+
+  <text x="524" y="548" font-family="Menlo, monospace" font-size="24" fill="#888780">github.com/sapuyou45-bit/oraclebone</text>
+</svg>

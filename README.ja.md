@@ -1,19 +1,29 @@
 # Oraclebone（甲骨）
 
-> **骨は裂ける。モデルは読む。**
->
+<div align="center">
+  <img src="docs/assets/icon.svg" alt="Oraclebone アイコン：甲骨の亀裂の先に JSON 波括弧" width="140">
+  <h3><b>骨は裂ける。モデルは読む。</b></h3>
+  <p>
+    <a href="https://pypi.org/project/oraclebone/"><code>uvx oraclebone-mcp</code></a> ·
+    <a href="https://sapuyou45-bit.github.io/oraclebone/">ホームページ</a> ·
+    <a href="https://github.com/sapuyou45-bit/oraclebone/releases/tag/v8.2.0">v8.2.0</a>
+  </p>
+</div>
+
 > 三千年前、殷の王は占卜を骨に刻んだ——人類最初の「監査可能な神託記録」。Oraclebone は同じ規律を AI エージェントにもたらす：監査済みスクリプトが結果を生成し、モデルは与えられた結果を解釈するだけで、決して捏造しない。
 
 <!-- mcp-name: io.github.sapuyou45-bit/oraclebone -->
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
-
+<details>
+<summary>デモ</summary>
 <p align="center">
   <a href="https://pypi.org/project/oraclebone/">
     <img src="docs/assets/demo.svg" alt="oraclebone demo: pip install, tarot draw, I Ching cast, MCP server stdio" width="100%">
   </a>
 </p>
+</details>
 
 [![tests](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/tests.yml/badge.svg)](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/tests.yml)
 [![release](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/release.yml/badge.svg)](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/release.yml)

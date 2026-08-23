@@ -1,19 +1,29 @@
 # Oraclebone
 
-> **The bone cracks. The model reads.**
->
+<div align="center">
+  <img src="docs/assets/icon.svg" alt="Oraclebone icon: oracle-bone crack joined with JSON braces" width="140">
+  <h3><b>The bone cracks. The model reads.</b></h3>
+  <p>
+    <a href="https://pypi.org/project/oraclebone/"><code>uvx oraclebone-mcp</code></a> ·
+    <a href="https://sapuyou45-bit.github.io/oraclebone/">Homepage</a> ·
+    <a href="https://github.com/sapuyou45-bit/oraclebone/releases/tag/v8.2.0">v8.2.0</a>
+  </p>
+</div>
+
 > Three thousand years ago, Shang kings carved their divinations into bone — the first auditable record of an oracle at work. Oraclebone brings the same discipline to AI agents: audited scripts produce the draw, the hexagram, the pillars; the model only interprets what it is given. It never invents the result.
 
 <!-- mcp-name: io.github.sapuyou45-bit/oraclebone -->
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
-
+<details>
+<summary>Demo</summary>
 <p align="center">
   <a href="https://pypi.org/project/oraclebone/">
     <img src="docs/assets/demo.svg" alt="oraclebone demo: pip install, tarot draw, I Ching cast, MCP server stdio" width="100%">
   </a>
 </p>
+</details>
 
 [![tests](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/tests.yml/badge.svg)](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/tests.yml)
 [![release](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/release.yml/badge.svg)](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/release.yml)
@@ -69,7 +79,7 @@ This is not scientific proof of divination efficacy. It is a stricter workflow f
 
 ## 🌐 Multilingual Docs
 
-The GitHub Pages site now defaults to Simplified Chinese. Use the page header switcher there when you want English or Japanese.
+The GitHub Pages site ships a six-language switcher — 简体中文, English, 日本語, Português, 한국어, Español. It follows your browser language by default and remembers your manual choice.
 
 [Open the published site](https://sapuyou45-bit.github.io/oraclebone/)
 

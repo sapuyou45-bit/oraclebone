@@ -1,19 +1,29 @@
 # Oraclebone（甲骨）
 
-> **骨自裂，模型读之。**
->
+<div align="center">
+  <img src="docs/assets/icon.svg" alt="Oraclebone 图标：甲骨裂纹末端接 JSON 花括号" width="140">
+  <h3><b>骨自裂，模型读之。</b></h3>
+  <p>
+    <a href="https://pypi.org/project/oraclebone/"><code>uvx oraclebone-mcp</code></a> ·
+    <a href="https://sapuyou45-bit.github.io/oraclebone/">主页</a> ·
+    <a href="https://github.com/sapuyou45-bit/oraclebone/releases/tag/v8.2.0">v8.2.0</a>
+  </p>
+</div>
+
 > 三千年前，商王将占卜刻于甲骨之上——那是人类最早可审计的神谕档案。Oraclebone 把同样的纪律带给 AI agent：由可审计的脚本起卦、抽牌、排盘，模型只负责解读既定结果，绝不自己编造。
 
 <!-- mcp-name: io.github.sapuyou45-bit/oraclebone -->
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
-
+<details>
+<summary>演示</summary>
 <p align="center">
   <a href="https://pypi.org/project/oraclebone/">
     <img src="docs/assets/demo.svg" alt="oraclebone demo: pip install, tarot draw, I Ching cast, MCP server stdio" width="100%">
   </a>
 </p>
+</details>
 
 [![tests](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/tests.yml/badge.svg)](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/tests.yml)
 [![release](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/release.yml/badge.svg)](https://github.com/sapuyou45-bit/oraclebone/actions/workflows/release.yml)

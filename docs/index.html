@@ -3,156 +3,138 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light">
-    <title>Oraclebone 甲骨 — 骨自裂，模型读之</title>
-    <meta
-      name="description"
-      content="给 AI agent 使用的直接、实用占卜技能集：塔罗、易经、小六壬、八字，以及更多象征系统。"
-    >
+    <meta name="color-scheme" content="dark">
+    <title>OracleBone 卜骨 — 让 AI 用可审计的随机性占卜</title>
+    <meta name="description" content="给 AI agent 使用的可审计占卜 MCP server：周易、八字、塔罗、小六壬。脚本计算，零幻觉。">
+    <link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <header class="site-header" aria-label="站点页眉">
-      <a class="brand" href="#top" aria-label="Oraclebone 甲骨首页">
-        <span class="brand-mark" aria-hidden="true">甲</span>
-        <span>Oraclebone 甲骨</span>
+    <header class="site-header">
+      <a class="brand" href="#top">
+        <img class="brand-mark" src="./assets/icon-512.png" alt="" width="30" height="30">
+        <span class="brand-name">OracleBone</span>
+        <span class="brand-sub">卜骨</span>
       </a>
-
-      <nav class="top-nav" aria-label="主导航">
+      <nav class="top-nav">
         <a href="#skills" data-i18n="nav.skills">技能</a>
         <a href="#rigor" data-i18n="nav.rigor">方法</a>
-        <a href="#quick-start" data-i18n="nav.quickStart">快速开始</a>
-        <a href="#safety" data-i18n="nav.safety">安全边界</a>
-        <a href="https://github.com/sapuyou45-bit/oraclebone" data-i18n="nav.github">GitHub</a>
+        <a href="#connect" data-i18n="nav.connect">接入</a>
+        <a href="#safety" data-i18n="nav.safety">边界</a>
+        <a href="https://github.com/sapuyou45-bit/oraclebone">GitHub</a>
       </nav>
-
-      <div class="language-switcher" role="group" aria-label="Language selector">
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <a href="?lang=zh" data-lang="zh" aria-pressed="true">中</a>
         <a href="?lang=en" data-lang="en" aria-pressed="false">EN</a>
-        <a href="?lang=zh" data-lang="zh" aria-pressed="true">中文</a>
-        <a href="?lang=ja" data-lang="ja" aria-pressed="false">日本語</a>
+        <a href="?lang=ja" data-lang="ja" aria-pressed="false">日</a>
+        <a href="?lang=pt" data-lang="pt" aria-pressed="false">PT</a>
+        <a href="?lang=ko" data-lang="ko" aria-pressed="false">한</a>
+        <a href="?lang=es" data-lang="es" aria-pressed="false">ES</a>
       </div>
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <canvas id="system-map" aria-hidden="true"></canvas>
+      <section class="hero">
         <div class="hero-inner">
-          <p class="eyebrow" data-i18n="hero.eyebrow">给 AI agent 使用的开源技能</p>
-          <h1 id="hero-title" data-i18n="hero.title">直接、可验证的占卜工具，服务于稳健的 agent 工作流。</h1>
-          <p class="hero-copy" data-i18n="hero.copy">
-            塔罗、易经、小六壬、八字技能将占卜过程与解释分开：脚本负责抽取或起课并输出 JSON，AI 只负责解读。
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="https://github.com/sapuyou45-bit/oraclebone" data-i18n="hero.github">查看 GitHub</a>
-            <a class="button secondary" href="#quick-start" data-i18n="hero.quickStart">试用脚本</a>
+          <div class="hero-text">
+            <p class="badge">MCP server · v8.2.0 · MIT</p>
+            <h1 data-i18n="hero.title">让 AI 用可审计的随机性起卦、排盘、抽塔罗</h1>
+            <p class="hero-copy" data-i18n="hero.copy">蓍草概率、八字历法、64 卦全文——全部脚本计算，零幻觉。一次安装，Claude、Cursor、Gemini 都能用。</p>
+            <div class="hero-actions">
+              <code class="install-chip">uvx oraclebone-mcp</code>
+              <a class="btn" href="https://github.com/sapuyou45-bit/oraclebone">★ GitHub</a>
+            </div>
+            <p class="hero-note" data-i18n="hero.note">PyPI 已发布 · CI 全绿 · Docker 支持</p>
+          </div>
+          <div class="glass-card json-card">
+            <p class="card-label"><span class="dot"></span><span data-i18n="hero.jsonLabel">hexagram.cast() 输出示例</span></p>
+            <pre>{<span class="j-k">"hexagram"</span>: <span class="j-s">"䷾ 既济"</span>,
+ <span class="j-k">"method"</span>:    <span class="j-s">"yarrow-stalk"</span>,
+ <span class="j-k">"seed"</span>:      <span class="j-n">null</span>,
+ <span class="j-k">"audit"</span>:     <span class="j-s">"reproducible"</span>}</pre>
           </div>
         </div>
       </section>
 
-      <section class="section intro" aria-labelledby="intro-title">
-        <div>
-          <p class="section-label" data-i18n="intro.label">为什么做这个</p>
-          <h2 id="intro-title" data-i18n="intro.title">模型不应该自己编出占卜结果。</h2>
-        </div>
-        <p data-i18n="intro.copy">
-          本项目将占卜体系视为象征推理与反思工具，而不是确定性预言机器。
-          本地脚本生成牌面、卦象或位置，AI agent 基于这个具体结果进行解释。
-        </p>
+      <section class="section intro">
+        <p class="section-label" data-i18n="intro.label">为什么做这个</p>
+        <h2 data-i18n="intro.title">模型不应该自己编出占卜结果。</h2>
+        <p data-i18n="intro.copy">本项目把抽取与解释分开：本地脚本用系统随机或传统概率生成牌面、卦象或四柱，AI 只基于这个具体结果进行解读。</p>
       </section>
 
-      <section class="section rigor-section" id="rigor" aria-labelledby="rigor-title">
-        <div class="section-heading">
-          <p class="section-label" data-i18n="rigor.label">方法论严谨性</p>
-          <h2 id="rigor-title" data-i18n="rigor.title">随机过程和 AI 解读清楚分开。</h2>
-          <p data-i18n="rigor.copy">
-            真实 reading 的占卜结果来自系统随机、传统概率模型，或用户自己提供的实体占卜输入。
-            seed 只用于测试和可复现 demo。
-          </p>
-        </div>
-        <ul class="safety-list">
+      <section class="section" id="rigor">
+        <p class="section-label" data-i18n="rigor.label">方法论严谨性</p>
+        <h2 data-i18n="rigor.title">随机过程和 AI 解读清楚分开。</h2>
+        <ul class="check-list">
           <li data-i18n="rigor.item1">塔罗使用显式 Fisher-Yates 洗牌。</li>
-          <li data-i18n="rigor.item2">易经支持三枚硬币法和数字蓍草等价概率。</li>
-          <li data-i18n="rigor.item3">小六壬优先使用农历数字，也支持可选 lunar-time 转换。</li>
-          <li data-i18n="rigor.item4">近似模式必须带 warning，不伪装成传统准确起法。</li>
+          <li data-i18n="rigor.item2">易经支持三枚硬币法与蓍草等价概率（6:1/16 · 7:5/16 · 8:7/16 · 9:3/16）。</li>
+          <li data-i18n="rigor.item3">小六壬缺参数时报错会点名缺失字段；近似模式必带 warning。</li>
+          <li data-i18n="rigor.item4">seed 只用于测试和可复现 demo，正常占卜走系统随机。</li>
         </ul>
       </section>
 
-      <section class="section" id="skills" aria-labelledby="skills-title">
-        <div class="section-heading">
-          <p class="section-label" data-i18n="skills.label">已包含技能</p>
-          <h2 id="skills-title" data-i18n="skills.title">先从四个实用模块开始。</h2>
-        </div>
-
+      <section class="section" id="skills">
+        <p class="section-label" data-i18n="skills.label">已包含技能</p>
+        <h2 data-i18n="skills.title">四个实用模块。</h2>
         <div class="skill-grid">
-          <article class="skill-card">
-            <span class="system-token tarot-token">Tarot</span>
-            <h3 data-i18n="skills.tarot.title">塔罗</h3>
-            <p data-i18n="skills.tarot.copy">用于反思、决策、创作卡点和项目复盘的抽牌工具。</p>
-            <code>skills/tarot/scripts/draw.py</code>
+          <article class="skill-card featured">
+            <h3 data-i18n="skills.iching.title">周易</h3>
+            <p data-i18n="skills.iching.copy">蓍草法起卦，输出本卦、变爻与之卦，附 64 卦全文。</p>
+            <code>oraclebone iching --method yarrow</code>
           </article>
-
           <article class="skill-card">
-            <span class="system-token iching-token">I Ching</span>
-            <h3 data-i18n="skills.iching.title">易经</h3>
-            <p data-i18n="skills.iching.copy">生成六爻卦象，输出本卦、变爻与之卦。</p>
-            <code>skills/iching/scripts/cast.py</code>
-          </article>
-
-          <article class="skill-card">
-            <span class="system-token xlr-token">Xiao Liu Ren</span>
-            <h3 data-i18n="skills.xiaoliuren.title">小六壬</h3>
-            <p data-i18n="skills.xiaoliuren.copy">支持用农历式数字起课，也支持轻量公历时间 fallback。</p>
-            <code>skills/xiaoliuren/scripts/cast.py</code>
-          </article>
-
-          <article class="skill-card">
-            <span class="system-token bazi-token">Bazi</span>
             <h3 data-i18n="skills.bazi.title">八字</h3>
-            <p data-i18n="skills.bazi.copy">由出生时间排出四柱、五行、纳音与生肖。</p>
-            <code>skills/bazi/scripts/cast.py</code>
+            <p data-i18n="skills.bazi.copy">真太阳时排四柱、五行、纳音；生肖按年柱口径，另附农历口径对照。</p>
+            <code>oraclebone bazi --datetime 1990-05-20T14:30</code>
+          </article>
+          <article class="skill-card">
+            <h3 data-i18n="skills.tarot.title">塔罗</h3>
+            <p data-i18n="skills.tarot.copy">大阿卡纳，牌阵可选，支持逆位，Fisher-Yates 洗牌。</p>
+            <code>oraclebone tarot --spread three-card --reversals</code>
+          </article>
+          <article class="skill-card">
+            <h3 data-i18n="skills.xiaoliuren.title">小六壬</h3>
+            <p data-i18n="skills.xiaoliuren.copy">农历数字或公历时间双起卦法，缺参报错直接指出缺什么。</p>
+            <code>oraclebone xiaoliuren --method numbers --month 3 --day 12 --hour 7</code>
           </article>
         </div>
       </section>
 
-      <section class="section command-section" id="quick-start" aria-labelledby="quick-start-title">
-        <div class="section-heading">
-          <p class="section-label" data-i18n="quick.label">快速开始</p>
-          <h2 id="quick-start-title" data-i18n="quick.title">安装一次，用一个 CLI 调用。</h2>
-          <p data-i18n="quick.copy">在 checkout 中使用 pip install .，之后通过 ai-divination 调用塔罗、易经、小六壬或 agent 解读模板。</p>
+      <section class="section" id="connect">
+        <p class="section-label" data-i18n="mcp.label">30 秒接入</p>
+        <h2 data-i18n="mcp.title">把 MCP server 接到你的 Agent。</h2>
+        <div class="mcp-grid">
+          <div class="glass-card">
+            <h3 data-i18n="mcp.claude">Claude Code / Desktop</h3>
+            <code>claude mcp add oraclebone -- uvx oraclebone-mcp</code>
+          </div>
+          <div class="glass-card">
+            <h3>Cursor</h3>
+            <code data-i18n="mcp.cursorHint">Settings → MCP → 粘贴 JSON 配置</code>
+          </div>
+          <div class="glass-card">
+            <h3>Gemini CLI</h3>
+            <code>gemini mcp add oraclebone</code>
+          </div>
+          <div class="glass-card">
+            <h3 data-i18n="mcp.others">Codex / 其他</h3>
+            <code data-i18n="mcp.othersHint">stdio JSON-RPC · 标准 MCP 协议</code>
+          </div>
         </div>
-
-        <div class="command-list" aria-label="Example commands">
+        <p class="section-label cli-label" data-i18n="cli.label">或者直接用 CLI</p>
+        <div class="command-list">
           <pre><code>pip install oraclebone</code></pre>
-          <pre><code>ai-divination tarot --deck major --spread three-card --reversals</code></pre>
-          <pre><code>ai-divination iching --method yarrow</code></pre>
-          <pre><code>ai-divination xiaoliuren --method numbers --month 3 --day 12 --hour 7</code></pre>
-          <pre><code>ai-divination bazi --datetime 1990-05-20T14:30:00</code></pre>
-          <pre><code>ai-divination template tarot</code></pre>
+          <pre><code>oraclebone iching --method yarrow</code></pre>
+          <pre><code>oraclebone bazi --datetime 1990-05-20T14:30:00</code></pre>
+          <pre><code>oraclebone tarot --deck major --spread three-card --reversals</code></pre>
         </div>
       </section>
 
-      <section class="section install-section" aria-labelledby="install-title">
-        <div>
-          <p class="section-label" data-i18n="install.label">安装</p>
-          <h2 id="install-title" data-i18n="install.title">把一句话发给你的 AI agent。</h2>
-        </div>
-        <div class="install-copy">
-          <p data-i18n="install.copy">
-            agent 会读取远程安装说明，把 tarot、iching、xiaoliuren、bazi 复制到 skill 目录，并验证脚本。
-          </p>
-          <pre><code>请帮我安装 AI Divination Skills：https://raw.githubusercontent.com/sapuyou45-bit/oraclebone/main/docs/install.md</code></pre>
-          <p data-i18n="install.shellCopy">也可以直接安装到 Claude 风格的本地 skills 目录：</p>
-          <pre><code>curl -fsSL https://raw.githubusercontent.com/sapuyou45-bit/oraclebone/main/install.sh | bash</code></pre>
-          <p data-i18n="install.target">默认目标：~/.claude/skills。设置 AI_SKILLS_DIR 可安装到其他 agent 的 skill 目录。</p>
-        </div>
-      </section>
-
-      <section class="section safety-section" id="safety" aria-labelledby="safety-title">
-        <div class="section-heading">
-          <p class="section-label" data-i18n="safety.label">安全边界</p>
-          <h2 id="safety-title" data-i18n="safety.title">象征性反思，不是确定性预言。</h2>
-        </div>
-        <ul class="safety-list">
+      <section class="section" id="safety">
+        <p class="section-label" data-i18n="safety.label">安全边界</p>
+        <h2 data-i18n="safety.title">象征性反思，不是确定性预言。</h2>
+        <ul class="check-list">
           <li data-i18n="safety.item1">不要把解读用作医疗、法律、金融或危机处置建议。</li>
           <li data-i18n="safety.item2">每个主要解释都要回到脚本生成的具体结果。</li>
           <li data-i18n="safety.item3">保留用户自主性，并给出小而可逆的下一步。</li>
@@ -162,7 +144,8 @@
 
     <footer class="site-footer">
       <span>MIT</span>
-      <a href="https://github.com/sapuyou45-bit/oraclebone/releases/tag/v8.1.0">v8.1.0</a>
+      <a href="https://github.com/sapuyou45-bit/oraclebone/releases/tag/v8.2.0">v8.2.0</a>
+      <a href="https://pypi.org/project/oraclebone/">PyPI</a>
       <a href="https://github.com/sapuyou45-bit/oraclebone/blob/main/ETHICS.md" data-i18n="footer.ethics">伦理说明</a>
     </footer>
 
