@@ -33,4 +33,4 @@ build-backend = "setuptools.build_meta"
 include = ["oraclebone*"]
 
 [tool.setuptools.package-data]
-oraclebone = ["templates/*.md", "schemas/*.json"]
+oraclebone = ["templates/*.md", "schemas/*.json", "data/*.json"]

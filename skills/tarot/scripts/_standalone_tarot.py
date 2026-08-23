@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+from pathlib import Path
 from typing import Any
 
 
@@ -36,205 +37,22 @@ MAJOR_ARCANA = [
 SUITS = ["Wands", "Cups", "Swords", "Pentacles"]
 RANKS = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Page", "Knight", "Queen", "King"]
 
-MAJOR_MEANINGS = {
-    "The Fool": {
-        "upright": [
-            "beginning",
-            "risk",
-            "openness"
-        ],
-        "shadow": "naivety",
-        "question": "What can start small?"
-    },
-    "The Magician": {
-        "upright": [
-            "agency",
-            "tools",
-            "focus"
-        ],
-        "shadow": "manipulation",
-        "question": "What resources are already available?"
-    },
-    "The High Priestess": {
-        "upright": [
-            "intuition",
-            "hidden knowledge"
-        ],
-        "shadow": "passivity",
-        "question": "What is known but not yet said?"
-    },
-    "The Empress": {
-        "upright": [
-            "growth",
-            "care",
-            "creation"
-        ],
-        "shadow": "overindulgence",
-        "question": "What needs nurturing?"
-    },
-    "The Emperor": {
-        "upright": [
-            "structure",
-            "authority",
-            "boundaries"
-        ],
-        "shadow": "rigidity",
-        "question": "What needs clearer rules?"
-    },
-    "The Hierophant": {
-        "upright": [
-            "tradition",
-            "teaching",
-            "institutions"
-        ],
-        "shadow": "conformity",
-        "question": "Which convention helps or limits this?"
-    },
-    "The Lovers": {
-        "upright": [
-            "alignment",
-            "choice",
-            "values"
-        ],
-        "shadow": "divided motives",
-        "question": "What choice reveals the real value?"
-    },
-    "The Chariot": {
-        "upright": [
-            "direction",
-            "discipline",
-            "momentum"
-        ],
-        "shadow": "forcefulness",
-        "question": "What needs coordinated effort?"
-    },
-    "Strength": {
-        "upright": [
-            "patience",
-            "courage",
-            "restraint"
-        ],
-        "shadow": "suppression",
-        "question": "How can pressure be met gently?"
-    },
-    "The Hermit": {
-        "upright": [
-            "reflection",
-            "study",
-            "solitude"
-        ],
-        "shadow": "isolation",
-        "question": "What needs quiet investigation?"
-    },
-    "Wheel of Fortune": {
-        "upright": [
-            "cycles",
-            "timing",
-            "change"
-        ],
-        "shadow": "helplessness",
-        "question": "What is turning without permission?"
-    },
-    "Justice": {
-        "upright": [
-            "fairness",
-            "evidence",
-            "consequence"
-        ],
-        "shadow": "cold judgment",
-        "question": "What would be balanced and accountable?"
-    },
-    "The Hanged Man": {
-        "upright": [
-            "pause",
-            "reversal",
-            "surrender"
-        ],
-        "shadow": "stagnation",
-        "question": "What changes if the view is inverted?"
-    },
-    "Death": {
-        "upright": [
-            "ending",
-            "transition",
-            "release"
-        ],
-        "shadow": "clinging",
-        "question": "What needs to end cleanly?"
-    },
-    "Temperance": {
-        "upright": [
-            "integration",
-            "pacing",
-            "repair"
-        ],
-        "shadow": "dilution",
-        "question": "What needs proportion?"
-    },
-    "The Devil": {
-        "upright": [
-            "attachment",
-            "compulsion",
-            "constraint"
-        ],
-        "shadow": "denial",
-        "question": "What bargain has become a chain?"
-    },
-    "The Tower": {
-        "upright": [
-            "disruption",
-            "truth",
-            "collapse"
-        ],
-        "shadow": "avoidance",
-        "question": "What unstable structure is being protected?"
-    },
-    "The Star": {
-        "upright": [
-            "hope",
-            "renewal",
-            "guidance"
-        ],
-        "shadow": "distance",
-        "question": "What restores faith without fantasy?"
-    },
-    "The Moon": {
-        "upright": [
-            "uncertainty",
-            "dreams",
-            "distortion"
-        ],
-        "shadow": "confusion",
-        "question": "What is unclear and needs testing?"
-    },
-    "The Sun": {
-        "upright": [
-            "clarity",
-            "vitality",
-            "success"
-        ],
-        "shadow": "overexposure",
-        "question": "What becomes simple in daylight?"
-    },
-    "Judgement": {
-        "upright": [
-            "reckoning",
-            "calling",
-            "review"
-        ],
-        "shadow": "self-condemnation",
-        "question": "What is ready to be answered for?"
-    },
-    "The World": {
-        "upright": [
-            "completion",
-            "integration",
-            "arrival"
-        ],
-        "shadow": "closure anxiety",
-        "question": "What cycle is complete?"
-    }
-}
+# Major arcana meanings live in oraclebone/data/tarot_meanings.json (single
+# source of truth). Standalone skill copies fall back to a tarot_meanings.json
+# sitting next to this file.
+
+def _load_tarot_data() -> dict[str, Any]:
+    try:
+        from importlib import resources
+
+        raw = resources.files("oraclebone.data").joinpath("tarot_meanings.json").read_text(encoding="utf-8")
+    except (ModuleNotFoundError, FileNotFoundError, NotADirectoryError):
+        fallback = Path(__file__).with_name("tarot_meanings.json")
+        raw = fallback.read_text(encoding="utf-8")
+    return json.loads(raw)
+
+
+MAJOR_MEANINGS: dict[str, dict[str, Any]] = _load_tarot_data()["major_arcana"]
 
 SUIT_THEMES = {
     "Wands": [
