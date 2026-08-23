@@ -9,31 +9,30 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DocsSiteTests(unittest.TestCase):
-    def test_docs_site_has_three_language_switcher_links(self):
+    def test_docs_site_has_six_language_switcher_links(self):
         html = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
 
-        self.assertIn('data-lang="en"', html)
-        self.assertIn('data-lang="zh"', html)
-        self.assertIn('data-lang="ja"', html)
-        self.assertIn('href="?lang=en"', html)
-        self.assertIn('href="?lang=zh"', html)
-        self.assertIn('href="?lang=ja"', html)
+        for lang in ["en", "zh", "ja", "pt", "ko", "es"]:
+            with self.subTest(lang=lang):
+                self.assertIn(f'data-lang="{lang}"', html)
+                self.assertIn(f'href="?lang={lang}"', html)
         self.assertIn('aria-label="Language selector"', html)
 
     def test_docs_site_static_default_is_chinese(self):
         html = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
 
         self.assertIn('<html lang="zh-CN">', html)
-        self.assertIn("<title>Oraclebone 甲骨", html)
+        self.assertIn("<title>OracleBone 卜骨", html)
         self.assertIn("给 AI agent 使用的直接、实用占卜技能集", html)
         self.assertIn('data-lang="zh" aria-pressed="true"', html)
-        self.assertIn("直接、可验证的占卜工具", html)
+        self.assertIn("让 AI 用可审计的随机性起卦、排盘、抽塔罗", html)
 
-    def test_docs_site_default_language_falls_back_to_chinese(self):
+    def test_docs_site_detects_browser_language_with_english_fallback(self):
         js = (ROOT / "docs" / "app.js").read_text(encoding="utf-8")
 
-        self.assertNotIn("navigator.language", js)
-        self.assertRegex(js, re.compile(r"function preferredLanguage\(\).*return \"zh\";", re.S))
+        self.assertIn("navigator.language", js)
+        self.assertRegex(js, re.compile(r'return "en";', re.S))
+        self.assertIn('localStorage.setItem("ob-lang", lang)', js)
 
     def test_docs_site_local_assets_exist_and_are_non_empty(self):
         html = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
@@ -55,21 +54,40 @@ class DocsSiteTests(unittest.TestCase):
         self.assertIn("prefers-reduced-motion", css)
         self.assertIn("scroll-behavior: auto", css)
 
-    def test_canvas_animation_respects_reduced_motion(self):
+    def test_app_js_persists_language_choice(self):
         js = (ROOT / "docs" / "app.js").read_text(encoding="utf-8")
 
-        self.assertIn("prefers-reduced-motion: reduce", js)
-        self.assertIn("prefersReducedMotion", js)
-        self.assertIn("if (!prefersReducedMotion)", js)
+        self.assertIn("ob-lang", js)
+        self.assertIn("history.replaceState", js)
 
-    def test_translation_dictionary_contains_required_languages(self):
+    def test_translation_dictionary_contains_six_languages(self):
         js = (ROOT / "docs" / "app.js").read_text(encoding="utf-8")
 
-        self.assertRegex(js, re.compile(r"const translations = \{.*\ben:", re.S))
-        self.assertRegex(js, re.compile(r"const translations = \{.*\bzh:", re.S))
-        self.assertRegex(js, re.compile(r"const translations = \{.*\bja:", re.S))
-        self.assertIn("给 AI agent 使用的开源技能", js)
-        self.assertIn("AI agent のためのオープンソース skill", js)
+        self.assertIn("const translations = {", js)
+        for lang in ["zh", "en", "ja", "pt", "ko", "es"]:
+            with self.subTest(lang=lang):
+                self.assertRegex(js, re.compile(r"const translations = \{.*\b%s:" % lang, re.S))
+
+    def test_translation_dictionary_covers_every_i18n_key_in_all_languages(self):
+        html = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
+        js = (ROOT / "docs" / "app.js").read_text(encoding="utf-8")
+
+        keys = set(re.findall(r'data-i18n="([^"]+)"', html))
+        self.assertTrue(keys)
+
+        match = re.search(r"const translations = \{(.*?)\n  \};", js, re.S)
+        self.assertIsNotNone(match)
+        block = match.group(1)
+        lang_blocks = re.split(r"\n    (?:zh|en|ja|pt|ko|es): \{", block)
+        dicts = []
+        for lang_block in lang_blocks[1:]:
+            pairs = dict(re.findall(r'"([a-zA-Z0-9.]+)": "((?:[^"\\]|\\.)*)"', lang_block))
+            dicts.append(pairs)
+        self.assertEqual(len(dicts), 6)
+        for key in keys:
+            for i, d in enumerate(dicts):
+                with self.subTest(key=key, lang=["zh", "en", "ja", "pt", "ko", "es"][i]):
+                    self.assertIn(key, d)
 
     def test_readme_points_to_published_pages_url(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")

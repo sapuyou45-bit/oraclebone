@@ -3,10 +3,10 @@
 
   var LANGS = ["zh", "en", "ja", "pt", "ko", "es"];
 
-  var I18N = {
+  const translations = {
     zh: {
       "meta.title": "OracleBone 卜骨 — 让 AI 用可审计的随机性占卜",
-      "meta.description": "给 AI agent 使用的可审计占卜 MCP server：周易、八字、塔罗、小六壬。脚本计算，零幻觉。",
+      "meta.description": "给 AI agent 使用的直接、实用占卜技能集：周易、八字、塔罗、小六壬。脚本计算，零幻觉。",
       "nav.skills": "技能",
       "nav.rigor": "方法",
       "nav.connect": "接入",
@@ -41,6 +41,11 @@
       "mcp.others": "Codex / 其他",
       "mcp.othersHint": "stdio JSON-RPC · 标准 MCP 协议",
       "cli.label": "或者直接用 CLI",
+      "install.label": "一键安装",
+      "install.title": "把一句话发给你的 AI agent。",
+      "install.copy": "agent 会读取远程安装说明，把 tarot、iching、xiaoliuren、bazi 复制到 skill 目录，并验证脚本。",
+      "install.shellCopy": "也可以直接装到 Claude 风格的本地 skills 目录：",
+      "install.target": "默认目标：~/.claude/skills。设置 AI_SKILLS_DIR 可安装到其他 agent 的 skill 目录。",
       "safety.label": "安全边界",
       "safety.title": "象征性反思，不是确定性预言。",
       "safety.item1": "不要把解读用作医疗、法律、金融或危机处置建议。",
@@ -61,7 +66,7 @@
       "hero.jsonLabel": "hexagram.cast() sample output",
       "intro.label": "Why this exists",
       "intro.title": "Models should not invent divination results.",
-      "intro.copy": "This project separates drawing from interpretation: local scripts generate cards, hexagrams, or four pillars using system randomness or traditional probabilities, and the AI interprets only that concrete result.",
+      "intro.copy": "This project separates drawing from interpretation: local scripts generate cards, hexagrams, or four pillars using system randomness or traditional probabilities, and the AI only interprets that concrete result.",
       "rigor.label": "Methodological rigor",
       "rigor.title": "Random process and AI interpretation, clearly separated.",
       "rigor.item1": "Tarot uses an explicit Fisher-Yates shuffle.",
@@ -85,6 +90,11 @@
       "mcp.others": "Codex / others",
       "mcp.othersHint": "stdio JSON-RPC · standard MCP protocol",
       "cli.label": "Or use the CLI directly",
+      "install.label": "One-line install",
+      "install.title": "Paste one line into your AI agent",
+      "install.copy": "The agent reads the remote install runbook, copies tarot, iching, xiaoliuren, and bazi into its skill directory, and verifies the scripts.",
+      "install.shellCopy": "Or install directly into a Claude-style local skills directory:",
+      "install.target": "Default target: ~/.claude/skills. Set AI_SKILLS_DIR to target another agent's skill directory.",
       "safety.label": "Safety boundaries",
       "safety.title": "Symbolic reflection, not deterministic prophecy.",
       "safety.item1": "Do not use interpretations as medical, legal, financial, or crisis advice.",
@@ -129,6 +139,11 @@
       "mcp.others": "Codex / その他",
       "mcp.othersHint": "stdio JSON-RPC · 標準 MCP プロトコル",
       "cli.label": "または CLI を直接使用",
+      "install.label": "ワンライン導入",
+      "install.title": "AI エージェントに一言貼り付けるだけ",
+      "install.copy": "エージェントはリモートのインストール手順を読み込み、tarot・iching・xiaoliuren・bazi を skill ディレクトリにコピーして検証します。",
+      "install.shellCopy": "Claude 方式のローカル skills ディレクトリに直接インストールもできます：",
+      "install.target": "既定の配置先：~/.claude/skills。別のエージェント用ディレクトリには AI_SKILLS_DIR を設定してください。",
       "safety.label": "安全の境界",
       "safety.title": "象徴的な内省であり、確定的な預言ではない。",
       "safety.item1": "解釈を医療・法律・金融・危機対応の助言として使わない。",
@@ -173,6 +188,11 @@
       "mcp.others": "Codex / outros",
       "mcp.othersHint": "stdio JSON-RPC · protocolo MCP padrão",
       "cli.label": "Ou use a CLI diretamente",
+      "install.label": "Instalação em uma linha",
+      "install.title": "Cole uma linha no seu agente de IA",
+      "install.copy": "O agente lê o guia remoto de instalação, copia tarot, iching, xiaoliuren e bazi para o diretório de skills e verifica os scripts.",
+      "install.shellCopy": "Ou instale diretamente em um diretório de skills local estilo Claude:",
+      "install.target": "Destino padrão: ~/.claude/skills. Defina AI_SKILLS_DIR para mirar o diretório de skills de outro agente.",
       "safety.label": "Limites de segurança",
       "safety.title": "Reflexão simbólica, não profecia determinística.",
       "safety.item1": "Não use interpretações como aconselhamento médico, jurídico, financeiro ou de crise.",
@@ -217,6 +237,11 @@
       "mcp.others": "Codex / 기타",
       "mcp.othersHint": "stdio JSON-RPC · 표준 MCP 프로토콜",
       "cli.label": "또는 CLI를 직접 사용",
+      "install.label": "한 줄 설치",
+      "install.title": "AI 에이전트에 한 줄만 붙여넣으세요",
+      "install.copy": "에이전트가 원격 설치 지침을 읽어 tarot·iching·xiaoliuren·bazi를 skill 디렉터리에 복사하고 스크립트를 검증합니다.",
+      "install.shellCopy": "또는 Claude 스타일 로컬 skills 디렉터리에 바로 설치할 수 있습니다:",
+      "install.target": "기본 대상: ~/.claude/skills. 다른 에이전트의 skill 디렉터리에는 AI_SKILLS_DIR를 설정하세요.",
       "safety.label": "안전 경계",
       "safety.title": "상징적 성찰이지 결정론적 예언이 아닙니다.",
       "safety.item1": "해석을 의료·법률·금융·위기 대처 조언으로 사용하지 마십시오.",
@@ -261,6 +286,11 @@
       "mcp.others": "Codex / otros",
       "mcp.othersHint": "stdio JSON-RPC · protocolo MCP estándar",
       "cli.label": "O usa la CLI directamente",
+      "install.label": "Instalación en una línea",
+      "install.title": "Pega una línea en tu agente de IA",
+      "install.copy": "El agente lee la guía remota de instalación, copia tarot, iching, xiaoliuren y bazi en su directorio de skills y verifica los scripts.",
+      "install.shellCopy": "O instala directamente en un directorio de skills local estilo Claude:",
+      "install.target": "Destino por defecto: ~/.claude/skills. Define AI_SKILLS_DIR para apuntar al directorio de skills de otro agente.",
       "safety.label": "Límites de seguridad",
       "safety.title": "Reflexión simbólica, no profecía determinista.",
       "safety.item1": "No uses las interpretaciones como consejo médico, legal, financiero o de crisis.",
@@ -286,7 +316,7 @@
   }
 
   function apply(lang) {
-    var dict = I18N[lang];
+    var dict = translations[lang];
     if (!dict) return;
     document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
     document.title = dict["meta.title"];

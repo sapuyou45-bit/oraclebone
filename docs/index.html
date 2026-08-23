@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark">
     <title>OracleBone 卜骨 — 让 AI 用可审计的随机性占卜</title>
-    <meta name="description" content="给 AI agent 使用的可审计占卜 MCP server：周易、八字、塔罗、小六壬。脚本计算，零幻觉。">
+    <meta name="description" content="给 AI agent 使用的直接、实用占卜技能集：周易、八字、塔罗、小六壬。脚本计算，零幻觉。">
     <link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
     <link rel="stylesheet" href="./styles.css">
@@ -24,7 +24,7 @@
         <a href="#safety" data-i18n="nav.safety">边界</a>
         <a href="https://github.com/sapuyou45-bit/oraclebone">GitHub</a>
       </nav>
-      <div class="lang-switcher" role="group" aria-label="Language">
+      <div class="lang-switcher" role="group" aria-label="Language selector">
         <a href="?lang=zh" data-lang="zh" aria-pressed="true">中</a>
         <a href="?lang=en" data-lang="en" aria-pressed="false">EN</a>
         <a href="?lang=ja" data-lang="ja" aria-pressed="false">日</a>
@@ -129,6 +129,20 @@
           <pre><code>oraclebone bazi --datetime 1990-05-20T14:30:00</code></pre>
           <pre><code>oraclebone tarot --deck major --spread three-card --reversals</code></pre>
         </div>
+      </section>
+
+      <section class="section" id="install">
+        <p class="section-label" data-i18n="install.label">一键安装</p>
+        <h2 data-i18n="install.title">把一句话发给你的 AI agent。</h2>
+        <p data-i18n="install.copy">agent 会读取远程安装说明，把 tarot、iching、xiaoliuren、bazi 复制到 skill 目录，并验证脚本。</p>
+        <div class="command-list">
+          <pre><code>Install Oraclebone for this agent: https://raw.githubusercontent.com/sapuyou45-bit/oraclebone/main/docs/install.md</code></pre>
+        </div>
+        <p class="section-label cli-label" data-i18n="install.shellCopy">也可以直接装到 Claude 风格的本地 skills 目录：</p>
+        <div class="command-list">
+          <pre><code>curl -fsSL https://raw.githubusercontent.com/sapuyou45-bit/oraclebone/main/install.sh | bash</code></pre>
+        </div>
+        <p class="hero-note" data-i18n="install.target">默认目标：~/.claude/skills。设置 AI_SKILLS_DIR 可安装到其他 agent 的 skill 目录。</p>
       </section>
 
       <section class="section" id="safety">
