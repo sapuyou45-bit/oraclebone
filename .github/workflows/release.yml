@@ -14,8 +14,8 @@ jobs:
     outputs:
       pypi-token-available: ${{ steps.has-token.outputs.available }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install build tooling
@@ -55,7 +55,7 @@ jobs:
         with:
           name: dist
           path: dist
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install twine
